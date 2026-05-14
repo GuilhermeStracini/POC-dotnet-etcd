@@ -11,8 +11,7 @@ internal static class Program
     {
         var client = new EtcdClient(
             "http://localhost:2379",
-            configureChannelOptions: options =>
-                options.Credentials = ChannelCredentials.Insecure
+            configureChannelOptions: options => options.Credentials = ChannelCredentials.Insecure
         );
 
         Console.WriteLine("=== etcd PoC with .NET ===");
@@ -41,7 +40,9 @@ internal static class Program
 
         await client.DeleteAsync("name");
         var deleted = await client.GetValAsync("name");
-        Console.WriteLine($"GET name (after delete) = \"{deleted}\" (empty string means key not found)");
+        Console.WriteLine(
+            $"GET name (after delete) = \"{deleted}\" (empty string means key not found)"
+        );
 
         Console.WriteLine();
     }
