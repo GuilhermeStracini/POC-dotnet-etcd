@@ -6,6 +6,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="dotnet-etcd" Version="8.1.0" />
+    <PackageReference Include="dotnet-etcd" Version="9.1.0" />
   </ItemGroup>
 </Project>
