@@ -9,9 +9,8 @@ internal static class Program
 {
     public static async Task Main()
     {
-        var client = new EtcdClient(
-            "http://localhost:2379",
-            configureChannelOptions: options => options.Credentials = ChannelCredentials.Insecure
+        var client = new EtcdClient("http://localhost:2379", configureChannelOptions: options =>
+            options.Credentials = ChannelCredentials.Insecure
         );
 
         Console.WriteLine("=== etcd PoC with .NET ===");
@@ -51,16 +50,13 @@ internal static class Program
     {
         Console.WriteLine("--- Watch ---");
 
-        _ = client.WatchAsync(
-            "dog",
-            (WatchEvent[] events) =>
-            {
-                if (events.Length == 0)
-                    return;
-                foreach (var e in events)
-                    Console.WriteLine($"  Watch event: {e.Key} -> \"{e.Value}\" ({e.Type})");
-            }
-        );
+        _ = client.WatchAsync("dog", (WatchEvent[] events) =>
+        {
+            if (events.Length == 0)
+                return;
+            foreach (var e in events)
+                Console.WriteLine($"  Watch event: {e.Key} -> \"{e.Value}\" ({e.Type})");
+        });
 
         await client.PutAsync("dog", "sits");
         await client.PutAsync("dog", "runs");
@@ -83,17 +79,14 @@ internal static class Program
             },
         };
 
-        _ = client.WatchAsync(
-            watchRequest,
-            (WatchEvent[] events) =>
-            {
-                if (events.Length == 0)
-                    return;
-                Console.WriteLine($"  Watch received {events.Length} event(s) in one response:");
-                foreach (var e in events)
-                    Console.WriteLine($"    {e.Key} -> \"{e.Value}\" ({e.Type})");
-            }
-        );
+        _ = client.WatchAsync(watchRequest, (WatchEvent[] events) =>
+        {
+            if (events.Length == 0)
+                return;
+            Console.WriteLine($"  Watch received {events.Length} event(s) in one response:");
+            foreach (var e in events)
+                Console.WriteLine($"    {e.Key} -> \"{e.Value}\" ({e.Type})");
+        });
 
         var txn = new TxnRequest();
         txn.Success.AddRange(
